@@ -4,7 +4,7 @@ import api from "@/service/api";
 export default async function createUser() {
   const user = await currentUser();
 
-  const clerk_id: string = user.id;
+  const clerk_id: string | undefined = user?.id;
   try {
     const res = await api.post("/create-user", {
       name: user?.fullName,
