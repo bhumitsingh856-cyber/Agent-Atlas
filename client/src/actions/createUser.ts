@@ -3,8 +3,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import api from "@/service/api";
 export default async function createUser() {
   const user = await currentUser();
-
-  const clerk_id: string | undefined = user?.id;
+  const clerk_id = user?.id;
   try {
     const res = await api.post("/create-user", {
       name: user?.fullName,

@@ -38,7 +38,8 @@ export default function Chat() {
         body: JSON.stringify({ research_id: id, query: input }),
       })
       let ac: string = ""
-      const reader = res.body?.getReader();
+      if (!res.body) return;
+      const reader = res.body.getReader();
       const decoder = new TextDecoder();
       while (true) {
         const { done, value } = await reader.read();

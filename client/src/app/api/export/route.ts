@@ -261,7 +261,10 @@ export async function POST(req: Request) {
       preferCSSPageSize: true,
     });
     await browser.close();
-    return new NextResponse(pdf, {
+    if (!pdf) {
+      return NextResponse.json({ success: false });
+    }
+    return new NextResponse(pdf as any, {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="${filename}.pdf"`,

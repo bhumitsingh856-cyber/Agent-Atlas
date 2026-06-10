@@ -68,7 +68,7 @@ export default function ResearchReport({
         try {
             const res = await axios.post("/api/namespace", { research_id: id, report: report });
             if (res.data.success) {
-                setQAReport(report)
+                setQAReport(report || "")
                 router.push(`/researchQA/${id}`)
                 toast.success(res.data.message)
             }
@@ -147,7 +147,7 @@ export default function ResearchReport({
             ) : (
                 <ScrollArea className="h-[700px] rounded-xl border p-6">
                     <article id="report" className="prose prose-neutral dark:prose-invert max-w-none">
-                        <EnhancedMarkdown content={report} topic={topic} />
+                        <EnhancedMarkdown content={report || ""} />
                     </article>
                 </ScrollArea>
             )}

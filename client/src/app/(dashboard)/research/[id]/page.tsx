@@ -34,7 +34,7 @@ interface Research {
 }
 function page() {
     const { id } = useParams();
-    const [research, setResearch] = useState<Research>({})
+    const [research, setResearch] = useState<Research>({ id: -1, topic: "", report: "" })
     const [topic, setTopic] = useState<string>("");
     const [logs, setLogs] = useState<StreamEvent[]>([])
     const [nodes, setNodes] = useState<StreamNode[]>([])
@@ -43,7 +43,7 @@ function page() {
     const [researchLoading, setResearchLoading] = useState<boolean>(false)
     const loadResearch = async () => {
         setResearchLoading(true)
-        const res = await getResearch(parseInt(id))
+        const res = await getResearch(parseInt(id as string))
         if (res.success) {
             setResearch(res.research)
         }
@@ -64,9 +64,10 @@ function page() {
             },
             body: JSON.stringify({ topic, id }),
         });
-        const reader = res.body?.getReader();
+        if (!res.body) return;
+        const reader = res.body.getReader();
         const decoder = new TextDecoder('utf-8');
-        let buffer = '';
+        let buffer: string = '';
 
         while (true) {
             const { value, done } = await reader.read();
@@ -204,7 +205,7 @@ function page() {
                         <Button
                             onClick={() => handleGenerate()}
                             size="lg"
-                            disabled={loading || !topic.trim() || topic.length < 15 || research?.report}
+                            disabled={loading || !topic.trim() || topic.length < 15 || research.report.length > 0}
                             className="gap-2 hover:scale-102 cursor-pointer duration-300"
                         >
                             <Sparkles className="h-4 w-4" />
