@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
+import {toast} from 'sonner'    
 export default function WelcomePage() {
     const {user}=useUser()
     const nodes = [
@@ -201,13 +201,11 @@ export default function WelcomePage() {
                     transition={{ delay: 0.3, duration: 0.8 }}
                     className="mt-10"
                 >
-                    <Link href="/research/new">
-                        <Button size="lg" className="h-14 gap-2 px-8 text-base">
-                            <Sparkles className="h-4 w-4" />
-                            Start Research
-                            <ArrowRight className="h-4 w-4" />
-                        </Button>
-                    </Link>
+                    <Button onClick={()=>toast.message("Start new thread in Sidebar")} size="lg" className="h-14 gap-2 px-8 text-base" >
+                        <Sparkles className="h-4 w-4" />
+                        Start Research
+                        <ArrowRight className="h-4 w-4" />
+                    </Button>
                 </motion.div>
 
                 <motion.div

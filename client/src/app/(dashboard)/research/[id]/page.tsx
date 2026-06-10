@@ -205,7 +205,7 @@ function page() {
                         <Button
                             onClick={() => handleGenerate()}
                             size="lg"
-                            disabled={loading || !topic.trim() || topic.length < 15 || research.report.length > 0}
+                            disabled={research?.report?.length > 0 || loading || !topic.trim() || topic.length < 15}
                             className="gap-2 hover:scale-102 cursor-pointer duration-300"
                         >
                             <Sparkles className="h-4 w-4" />
