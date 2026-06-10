@@ -1,23 +1,26 @@
-from fastapi import FastAPI, Request, Depends
-from fastapi.middleware.cors import CORSMiddleware
-from app.RAGagent.agent.rag_workflow import rag_graph
-from app.agent.workflow import graph
-
-# from dummy_graph import graph
-from contextlib import asynccontextmanager
-from app.agent.checkpointer import pool
-from app.db.db import engine
-from app.models.schema import Base
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.db.db import get_db
 from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
-from app.models.schema import User, Research
-from sqlalchemy import select, delete
-from sqlalchemy.orm import selectinload
-import json
-from datetime import datetime
-from fastapi.responses import StreamingResponse
+from app.RAGagent.agent.rag_workflow import rag_graph
+from fastapi.middleware.cors import CORSMiddleware
 from langchain_core.messages import HumanMessage
+from fastapi.responses import StreamingResponse
+from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import FastAPI, Request, Depends
+from app.models.schema import User, Research
+from contextlib import asynccontextmanager
+from sqlalchemy.orm import selectinload
+from app.agent.checkpointer import pool
+from sqlalchemy import select, delete
+from app.agent.workflow import graph
+from app.models.schema import Base
+# from dummy_graph import graph
+from dotenv import load_dotenv
+from datetime import datetime
+from app.db.db import engine
+from app.db.db import get_db
+import json
+import os
+
+load_dotenv()
 
 from app.RAGagent.rag.pipeline import (
     store_exists,
@@ -48,7 +51,7 @@ app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[os.getenv("FRONTEND_URL")],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

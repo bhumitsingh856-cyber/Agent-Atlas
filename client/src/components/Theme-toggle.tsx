@@ -8,6 +8,7 @@ export function ThemeToggle() {
 
   return (
     <button
+    suppressHydrationWarning
       className="p-2 rounded-md w-fit group hover:scale-105 duration-300 cursor-pointer border"
       onClick={() =>
         setTheme(theme === "dark" ? "light" : "dark")

@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from 'lucide-react'
+import { HashLoader } from "react-spinners"
 import { NodeStream } from '@/components/research/NodeStream'
 
 interface StreamEvent {
@@ -26,10 +27,10 @@ interface StreamNode {
     status: "pending" | "running" | "completed" | "error"
     timestamp: string
 }
-interface Research{
+interface Research {
     id: number;
     topic: string;
-    report: string; 
+    report: string;
 }
 function page() {
     const { id } = useParams();
@@ -39,7 +40,9 @@ function page() {
     const [nodes, setNodes] = useState<StreamNode[]>([])
     const [report, setReport] = useState<string>("")
     const [loading, setLoading] = useState<boolean>(false)
+    const [researchLoading, setResearchLoading] = useState<boolean>(false)
     const loadResearch = async () => {
+        setResearchLoading(true)
         const res = await getResearch(parseInt(id))
         if (res.success) {
             setResearch(res.research)
@@ -47,10 +50,11 @@ function page() {
         else {
             toast.error(res.message)
         }
+        setResearchLoading(false)
     }
     useEffect(() => {
         loadResearch()
-    }, [id]) 
+    }, [id])
     const handleGenerate = async () => {
         setLoading(true)
         const res = await fetch("/api/generate", {
@@ -58,7 +62,7 @@ function page() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ topic , id}),
+            body: JSON.stringify({ topic, id }),
         });
         const reader = res.body?.getReader();
         const decoder = new TextDecoder('utf-8');
@@ -134,7 +138,7 @@ function page() {
                             )
                         }
                     }
-                    else if(parsedData.operation === "result") {
+                    else if (parsedData.operation === "result") {
                         setReport(parsedData.result)
                     }
                     else { setLogs((prevLogs) => [...prevLogs, parsedData]); }
@@ -148,7 +152,12 @@ function page() {
 
     return (
         <div>
-            <Card className="rounded-none">
+            <Card className="rounded-none relative">
+            {
+                researchLoading && <div className='h-screen w-full fixed inset-0 z-50 bg-background/70 text-foreground flex justify-center items-center  bg-opaccity-20 text-4xl'>
+                    <HashLoader color="currentColor" size={70}/>
+                </div>
+            }
                 <CardContent className="space-y-2">
                     <div>
                         <h2 className="text-2xl font-semibold tracking-tight">
@@ -161,7 +170,7 @@ function page() {
                     </div>
 
                     <Textarea
-                        value={(research?.topic ) || topic}
+                        value={(research?.topic) || topic}
                         disabled={(research?.report ? true : false) || (report ? true : false)}
                         maxLength={2000}
 
@@ -195,7 +204,7 @@ function page() {
                         <Button
                             onClick={() => handleGenerate()}
                             size="lg"
-                            disabled ={loading || !topic.trim() || topic.length < 15 || research?.report}
+                            disabled={loading || !topic.trim() || topic.length < 15 || research?.report}
                             className="gap-2 hover:scale-102 cursor-pointer duration-300"
                         >
                             <Sparkles className="h-4 w-4" />
@@ -209,13 +218,13 @@ function page() {
                     </div>
                 </CardContent>
             </Card>
-            { !research?.report &&
+            {!research?.report &&
                 <div className="grid gap-6 lg:grid-cols-3">
-                <NodeStream nodes={nodes}></NodeStream>
-                <AgentActivity logs={logs}></AgentActivity>
-            </div>
+                    <NodeStream nodes={nodes}></NodeStream>
+                    <AgentActivity logs={logs}></AgentActivity>
+                </div>
             }
-                <ResearchReport report={research?.report || report} isGenerating={loading} topic={research?.topic || topic}></ResearchReport>
+            <ResearchReport report={research?.report || report} isGenerating={loading} topic={research?.topic || topic}></ResearchReport>
         </div >
     )
 }

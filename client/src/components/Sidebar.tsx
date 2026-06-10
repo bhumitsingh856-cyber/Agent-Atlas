@@ -23,10 +23,11 @@ function SideBar() {
     const { user } = useUser();
     const router = useRouter();
     const params = useParams();
-    console.log(params)
+
     const [loading, setLoading] = useState<true | false>(false);
     const [showDelete, setShowDelete] = useState<true | false>(false);
     const [isDeleting, setIsDeleting] = useState<true | false>(false);
+    
     const deleteResearch = useResearchStore(state => state.deleteResearch)
     const researches = useResearchStore(state => state.researches)
     const addResearch = useResearchStore(state => state.addResearch)

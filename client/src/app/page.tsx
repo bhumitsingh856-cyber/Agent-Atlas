@@ -18,7 +18,7 @@ export default function Landing() {
         <nav className="hidden items-center gap-8 text-sm text-muted-foreground md:flex">
           <a href="#architecture" className="hover:text-foreground transition-colors">Architecture</a>
           <a href="#how" className="hover:text-foreground transition-colors">How it works</a>
-          <a href="#cta" className="hover:text-foreground transition-colors">Git-Hub</a>
+          <a href="https://github.com/bhumitsingh856-cyber/Agent-Atlas" className="hover:text-foreground transition-colors">Git-Hub</a>
           <ThemeToggle />
         </nav>
         <div className="md:hidden">
