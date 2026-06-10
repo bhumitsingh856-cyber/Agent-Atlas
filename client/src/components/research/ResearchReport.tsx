@@ -43,26 +43,38 @@ export default function ResearchReport({
     const { id } = useParams();
 
     const handleExport = async () => {
-        setExporting(true)
+        setExporting(true);
         try {
-            const element = document.getElementById("report")
-            const res = await axios.post("/api/export", {
-                html: element?.innerHTML,
-                filename: topic
-            }, { responseType: "blob" })
-            const url = URL.createObjectURL(res.data)
-            const link = document.createElement("a")
-            link.href = url
-            link.download = `${topic}.pdf`
-            link.click()
-            URL.revokeObjectURL(url)
-            toast.success("PDF exported successfully!")
+            const element = document.getElementById("report");
+            const res = await axios.post(
+                "/api/export",
+                { html: element?.innerHTML, filename: topic },
+                { responseType: "blob" }
+            );
+            const url = URL.createObjectURL(res.data);
+            // Mobile browsers (iOS Safari) often ignore the download attribute.
+            // Open the blob in a new tab/window as a fallback.
+            if (typeof window !== "undefined") {
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = `${topic}.pdf`;
+                link.target = "_blank";
+                document.body.appendChild(link);
+                link.click();
+                // In case the click does not trigger a download, open explicitly.
+                setTimeout(() => {
+                    window.open(url, "_blank");
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            }
+            toast.success("PDF exported successfully!");
         } catch (error) {
-            toast.error("Failed to export PDF")
+            toast.error("Failed to export PDF");
         } finally {
-            setExporting(false)
+            setExporting(false);
         }
-    }
+    };
     const handleQA = async () => {
         setCn(true)
         try {
@@ -145,11 +157,14 @@ export default function ResearchReport({
                     </div>
                 </div>
             ) : (
-                <ScrollArea className="h-[700px] rounded-xl border p-6">
-                    <article id="report" className="prose prose-neutral dark:prose-invert max-w-none">
-                        <EnhancedMarkdown content={report || ""} />
-                    </article>
-                </ScrollArea>
+                <div className="w-full overflow-x-auto">
+                    <div className="max-h-[90vh] w-full rounded-xl border sm:p-6 overflow-auto">
+                        <article id="report" className="prose prose-neutral dark:prose-invert max-w-full w-full break-words">
+                            <EnhancedMarkdown content={report || ""} />
+                        </article>
+                    </div>
+                </div>
+
             )}
         </CardContent>
     </Card>

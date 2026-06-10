@@ -18,13 +18,13 @@ export default function EnhancedMarkdown({ content, className }: EnhancedMarkdow
                 rehypePlugins={[rehypeHighlight]}
                 components={{
                     h1: ({ children }) => (
-                        <h1 className="text-xl font-bold text-foreground mt-4 mb-2">{children}</h1>
+                        <h1 className="text-xl font-bold text-foreground mt-2 mb-2">{children}</h1>
                     ),
                     h2: ({ children }) => (
-                        <h2 className="text-lg font-semibold text-foreground mt-3 mb-2">{children}</h2>
+                        <h2 className="text-lg font-semibold text-foreground mt-2 mb-2">{children}</h2>
                     ),
                     h3: ({ children }) => (
-                        <h3 className="text-base font-medium text-foreground mt-2 mb-1">{children}</h3>
+                        <h3 className="text-base font-medium text-foreground mt-1 mb-1">{children}</h3>
                     ),
                     p: ({ children }) => (
                         <p className="text-sm text-muted-foreground leading-relaxed mb-2">{children}</p>
