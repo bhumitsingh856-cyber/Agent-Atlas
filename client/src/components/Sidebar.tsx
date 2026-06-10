@@ -96,7 +96,7 @@ function SideBar() {
                                                 <h1 className="line-clamp-1 ">
                                                     {e.topic.length == 0 ? "Untitled" : e.topic}
                                                 </h1>
-                                                <span className="text-[15px] opacity-50">{new Date(e.createdAt).toLocaleString()}</span>
+                                                <span className="text-[15px] opacity-50">{new Date(e.createdAt + 'Z').toLocaleString()}</span>
                                             </div>
                                         </div>
                                     </Link>
