@@ -122,4 +122,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **⭐ If this project helped you, please consider giving it a star!**
 
-[Live Demo](https://agent-atlas.vercel.app) • [GitHub](https://github.com/bhumitsingh856-cyber/Agent-Atlas) • [Report Issue](https://github.com/bhumitsingh856-cyber/Agent-Atlas/issues)
+[Live Demo](https://agent-atlas-one.vercel.app) • [GitHub](https://github.com/bhumitsingh856-cyber/Agent-Atlas) • [Report Issue](https://github.com/bhumitsingh856-cyber/Agent-Atlas/issues)
